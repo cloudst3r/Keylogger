@@ -1,7 +1,8 @@
-from pynput.keyboard import Listener
+from pynput import keyboard
 
-def show(key):
-    print("GOT KEY:", key)
+def on_press(key):
+    print(f"got: {key}", flush=True)
 
-with Listener(on_press=show) as listener:
+with keyboard.Listener(on_press=on_press) as listener:
+    print("listener started", flush=True)
     listener.join()
