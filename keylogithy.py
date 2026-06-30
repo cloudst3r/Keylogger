@@ -34,3 +34,6 @@ try:
 except KeyboardInterrupt:
     pass
 finally: log_file.close()
+
+
+print('job_complete')
